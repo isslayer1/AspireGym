@@ -1,0 +1,595 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aspire Gym — Train Different.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --black-2:#141414;
+    --red:#e2231a;
+    --red-dim:#7a120c;
+    --white:#f5f5f3;
+    --grey:#8a8a86;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--white);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Bebas Neue',sans-serif;
+    letter-spacing:1px;
+    line-height:0.95;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(10,10,10,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.07);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    max-width:1200px;margin:0 auto;padding:14px 32px;
+  }
+  .nav-logo{display:flex;align-items:center;gap:10px;}
+  .nav-logo img{height:42px;width:auto;}
+  .nav-links{display:flex;gap:36px;align-items:center;}
+  .nav-links a{
+    font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--white);opacity:0.75;transition:opacity .2s, color .2s;
+  }
+  .nav-links a:hover{opacity:1;color:var(--red);}
+  .nav-cta{
+    background:var(--red);color:var(--white);
+    padding:10px 22px;font-weight:700;font-size:13px;letter-spacing:1px;
+    text-transform:uppercase;border-radius:2px;
+    transition:transform .2s, background .2s;
+  }
+  .nav-cta:hover{background:#ff2b20;transform:translateY(-2px);}
+  .burger{display:none;font-size:26px;background:none;border:none;color:var(--white);cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding-top:90px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(226,35,26,0.18), transparent 60%),
+      var(--black);
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    bottom:-2px;left:0;right:0;
+    height:140px;
+    background:
+      radial-gradient(ellipse 70% 100% at 50% 100%, rgba(226,35,26,0.35), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 70% 70% at 50% 30%, black, transparent);
+  }
+  .hero-content{
+    position:relative;z-index:2;
+    width:100%;
+    text-align:center;
+  }
+  .hero-eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    color:var(--red);margin-bottom:24px;
+  }
+  .hero-eyebrow::before,.hero-eyebrow::after{
+    content:"";width:30px;height:1px;background:var(--red);
+  }
+  .hero h1{
+    font-size:clamp(64px,12vw,160px);
+    text-transform:uppercase;
+    color:var(--white);
+  }
+  .hero h1 .accent{color:var(--red);}
+  .hero-sub{
+    max-width:560px;margin:28px auto 0;
+    font-size:17px;line-height:1.7;color:var(--grey);
+  }
+  .hero-actions{
+    display:flex;gap:18px;justify-content:center;margin-top:42px;flex-wrap:wrap;
+  }
+  .btn-primary{
+    background:var(--red);color:var(--white);
+    padding:18px 38px;font-weight:800;font-size:14px;
+    letter-spacing:1.5px;text-transform:uppercase;border-radius:2px;
+    transition:transform .2s, box-shadow .2s;
+    box-shadow:0 8px 30px rgba(226,35,26,0.35);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(226,35,26,0.5);}
+  .btn-ghost{
+    border:1.5px solid rgba(255,255,255,0.25);color:var(--white);
+    padding:18px 38px;font-weight:800;font-size:14px;
+    letter-spacing:1.5px;text-transform:uppercase;border-radius:2px;
+    transition:border-color .2s, background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--white);background:rgba(255,255,255,0.06);}
+
+  .hero-arc{
+    position:absolute;left:50%;bottom:60px;transform:translateX(-50%);
+    width:min(900px,90vw);opacity:0.9;z-index:1;
+  }
+
+  .stat-strip{
+    position:relative;z-index:2;
+    display:flex;justify-content:center;gap:64px;
+    margin-top:70px;flex-wrap:wrap;
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding:36px 0 0;
+  }
+  .stat{text-align:center;}
+  .stat .num{font-family:'Bebas Neue';font-size:46px;color:var(--white);}
+  .stat .num span{color:var(--red);}
+  .stat .label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-top:4px;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:130px 0;}
+  .section-tight{padding:90px 0;}
+  .sec-head{max-width:640px;margin-bottom:64px;}
+  .sec-eyebrow{
+    color:var(--red);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+    margin-bottom:14px;display:block;
+  }
+  .sec-head h2{
+    font-size:clamp(38px,5.5vw,64px);text-transform:uppercase;color:var(--white);
+  }
+  .sec-head p{color:var(--grey);font-size:16px;margin-top:18px;line-height:1.7;}
+  .center{text-align:center;margin-left:auto;margin-right:auto;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--black-2);position:relative;}
+  .about-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;
+  }
+  .about-visual{
+    aspect-ratio:4/5;border-radius:6px;position:relative;overflow:hidden;
+    background:
+      linear-gradient(160deg, #1a1a1a, #0a0a0a);
+    border:1px solid rgba(255,255,255,0.08);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .about-visual .ring{
+    position:absolute;width:75%;aspect-ratio:1;border-radius:50%;
+    border:1px solid rgba(226,35,26,0.4);
+  }
+  .about-visual img{width:55%;filter:drop-shadow(0 20px 40px rgba(226,35,26,0.3));position:relative;z-index:2;}
+  .about-text p{color:var(--grey);font-size:16px;line-height:1.8;margin-bottom:18px;}
+  .about-list{margin-top:30px;display:flex;flex-direction:column;gap:16px;}
+  .about-list li{display:flex;gap:14px;align-items:flex-start;list-style:none;font-size:15px;color:var(--white);}
+  .about-list li::before{
+    content:"";flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--red);margin-top:6px;
+  }
+
+  /* ---------- PROGRAMS ---------- */
+  .programs-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .program-card{
+    background:var(--black);
+    padding:48px 36px;
+    transition:background .3s;
+    position:relative;
+  }
+  .program-card:hover{background:var(--black-2);}
+  .program-num{font-family:'Bebas Neue';font-size:14px;color:var(--red);letter-spacing:2px;}
+  .program-card h3{
+    font-size:32px;text-transform:uppercase;color:var(--white);margin:18px 0 14px;
+  }
+  .program-card p{color:var(--grey);font-size:14.5px;line-height:1.7;}
+  .program-card .tag{
+    display:inline-block;margin-top:20px;font-size:11px;letter-spacing:2px;
+    text-transform:uppercase;color:var(--red);font-weight:700;
+  }
+
+  /* ---------- PRICING ---------- */
+  .pricing{background:var(--black-2);}
+  .pricing-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:24px;
+  }
+  .price-card{
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:8px;
+    padding:46px 34px;
+    background:var(--black);
+    position:relative;
+    transition:transform .25s, border-color .25s;
+  }
+  .price-card:hover{transform:translateY(-6px);border-color:rgba(226,35,26,0.5);}
+  .price-card.featured{
+    background:linear-gradient(180deg, rgba(226,35,26,0.1), var(--black) 40%);
+    border-color:var(--red);
+  }
+  .price-badge{
+    position:absolute;top:-13px;left:34px;
+    background:var(--red);color:var(--white);
+    font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+    padding:6px 14px;border-radius:20px;
+  }
+  .price-tier{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);font-weight:700;}
+  .price-amt{font-family:'Bebas Neue';font-size:64px;color:var(--white);margin:14px 0 4px;}
+  .price-amt span{font-size:16px;color:var(--grey);font-family:'Inter';font-weight:500;}
+  .price-card ul{list-style:none;margin:30px 0 36px;display:flex;flex-direction:column;gap:13px;}
+  .price-card li{font-size:14.5px;color:var(--white);display:flex;gap:10px;align-items:flex-start;}
+  .price-card li::before{content:"✓";color:var(--red);font-weight:800;}
+  .price-btn{
+    display:block;text-align:center;width:100%;
+    padding:15px;border-radius:4px;font-weight:800;font-size:13px;
+    letter-spacing:1.5px;text-transform:uppercase;border:1.5px solid rgba(255,255,255,0.25);
+    transition:all .2s;
+  }
+  .price-card.featured .price-btn{background:var(--red);border-color:var(--red);}
+  .price-btn:hover{background:var(--red);border-color:var(--red);}
+
+  /* ---------- TRAINERS ---------- */
+  .trainers-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+  }
+  .trainer-card{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:3/4;background:var(--black-2);border:1px solid rgba(255,255,255,0.08);}
+  .trainer-photo{
+    width:100%;height:100%;
+    background:linear-gradient(165deg,#1c1c1c,#0a0a0a);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue';font-size:60px;color:rgba(226,35,26,0.35);
+  }
+  .trainer-info{
+    position:absolute;left:0;right:0;bottom:0;padding:22px;
+    background:linear-gradient(0deg, rgba(0,0,0,0.92), transparent);
+  }
+  .trainer-info h4{font-family:'Bebas Neue';font-size:24px;color:var(--white);letter-spacing:1px;}
+  .trainer-info span{font-size:12px;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi{background:var(--black-2);}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .testi-card{
+    background:var(--black);border:1px solid rgba(255,255,255,0.08);
+    border-radius:8px;padding:36px 30px;
+  }
+  .stars{color:var(--red);letter-spacing:3px;margin-bottom:18px;font-size:15px;}
+  .testi-card p{color:var(--white);font-size:15px;line-height:1.75;margin-bottom:24px;}
+  .testi-who{display:flex;align-items:center;gap:14px;}
+  .testi-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,var(--red),#7a120c);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Bebas Neue';font-size:18px;color:var(--white);
+  }
+  .testi-who strong{display:block;font-size:14px;color:var(--white);}
+  .testi-who span{font-size:12px;color:var(--grey);}
+
+  /* ---------- CTA BAND ---------- */
+  .cta-band{
+    position:relative;
+    padding:110px 0;
+    background:var(--black);
+    overflow:hidden;
+    text-align:center;
+  }
+  .cta-band::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 90% at 50% 50%, rgba(226,35,26,0.25), transparent 70%);
+  }
+  .cta-band h2{position:relative;font-size:clamp(40px,7vw,84px);text-transform:uppercase;}
+  .cta-band p{position:relative;color:var(--grey);max-width:480px;margin:20px auto 40px;font-size:16px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--black-2);border-top:1px solid rgba(255,255,255,0.08);padding:70px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:50px;margin-bottom:60px;}
+  .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .footer-logo img{height:46px;}
+  .footer-col p, .footer-col a{color:var(--grey);font-size:14px;line-height:2;}
+  .footer-col h5{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:18px;}
+  .footer-col a{display:block;transition:color .2s;}
+  .footer-col a:hover{color:var(--red);}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.08);padding-top:26px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+    font-size:13px;color:var(--grey);
+  }
+  .social-row{display:flex;gap:18px;}
+  .social-row a{
+    width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--white);
+    transition:all .2s;
+  }
+  .social-row a:hover{background:var(--red);border-color:var(--red);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+    .about-grid{grid-template-columns:1fr;}
+    .programs-grid{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .trainers-grid{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .stat-strip{gap:36px;}
+  }
+  @media (max-width:560px){
+    .trainers-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero-actions{flex-direction:column;align-items:center;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="/images/aspire-logo.png" alt="Aspire Gym">
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#programs">Programs</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#trainers">Trainers</a>
+      <a href="#testimonials">Reviews</a>
+    </div>
+    <a href="#pricing" class="nav-cta">Join Now</a>
+    <button class="burger">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap hero-content">
+    <span class="hero-eyebrow">Sfax's Performance Gym</span>
+    <h1>ASPIRE<br>TO <span class="accent">MORE</span></h1>
+    <p class="hero-sub">Strength training, conditioning, and coaching built around one goal: making you better than you were yesterday. No judgment. No shortcuts. Just results.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">Start Free Trial</a>
+      <a href="#programs" class="btn-ghost">View Programs</a>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat"><div class="num">12<span>+</span></div><div class="label">Years Running</div></div>
+      <div class="stat"><div class="num">1.2<span>K+</span></div><div class="label">Active Members</div></div>
+      <div class="stat"><div class="num">20<span>+</span></div><div class="label">Weekly Classes</div></div>
+      <div class="stat"><div class="num">24<span>/7</span></div><div class="label">Access</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="about section" id="about">
+  <div class="wrap about-grid">
+    <div class="about-visual">
+      <div class="ring"></div>
+      <img src="/images/aspire-logo.png" alt="Aspire Gym mark">
+    </div>
+    <div class="about-text">
+      <span class="sec-eyebrow">Why Aspire</span>
+      <h2 style="font-size:clamp(34px,5vw,52px);text-transform:uppercase;margin-bottom:24px;">Built For People Who Refuse To Settle</h2>
+      <p>Aspire Gym was founded on a simple idea: a gym should push you further than you'd push yourself. We combine real coaching, real equipment, and a community that actually shows up for you.</p>
+      <p>Whether you're chasing your first pull-up or your tenth competition, our coaches build a plan around your goals — not a generic template.</p>
+      <ul class="about-list">
+        <li>Certified coaches on the floor every session, not just behind a desk</li>
+        <li>Free weights, machines, and conditioning zone under one roof</li>
+        <li>Small-group and one-on-one programming available</li>
+        <li>Open 24/7 for members who train on their own schedule</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="programs" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="sec-eyebrow">What We Offer</span>
+      <h2>Train Your Way</h2>
+      <p>Three paths in, all leading to the same place — stronger than when you started.</p>
+    </div>
+  </div>
+  <div class="wrap" style="padding:0;max-width:1200px;">
+    <div class="programs-grid">
+      <div class="program-card">
+        <span class="program-num">01</span>
+        <h3>Strength &amp; Conditioning</h3>
+        <p>Barbell-focused programming for raw strength, built around progressive overload and proper coaching cues.</p>
+        <span class="tag">5x weekly →</span>
+      </div>
+      <div class="program-card">
+        <span class="program-num">02</span>
+        <h3>Group Classes</h3>
+        <p>High-energy small-group sessions that mix conditioning, circuits, and accountability with people pushing alongside you.</p>
+        <span class="tag">20+ classes →</span>
+      </div>
+      <div class="program-card">
+        <span class="program-num">03</span>
+        <h3>Personal Training</h3>
+        <p>One-on-one coaching for members who want a plan built entirely around their body, schedule, and goals.</p>
+        <span class="tag">By appointment →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing section" id="pricing">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="sec-eyebrow">Membership</span>
+      <h2>Pick Your Plan</h2>
+      <p>Transparent pricing. No contracts hiding in the fine print. Cancel any time.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <span class="price-tier">Starter</span>
+        <div class="price-amt">60<span>DT / mo</span></div>
+        <ul>
+          <li>Full gym floor access</li>
+          <li>Locker room &amp; showers</li>
+          <li>Standard hours access</li>
+          <li>Free fitness assessment</li>
+        </ul>
+        <a href="#" class="price-btn">Choose Starter</a>
+      </div>
+      <div class="price-card featured">
+        <span class="price-badge">Most Popular</span>
+        <span class="price-tier">All Access</span>
+        <div class="price-amt">95<span>DT / mo</span></div>
+        <ul>
+          <li>Everything in Starter</li>
+          <li>24/7 gym access</li>
+          <li>Unlimited group classes</li>
+          <li>1 free PT session / month</li>
+          <li>Guest passes (2 / month)</li>
+        </ul>
+        <a href="#" class="price-btn">Choose All Access</a>
+      </div>
+      <div class="price-card">
+        <span class="price-tier">Elite Coaching</span>
+        <div class="price-amt">180<span>DT / mo</span></div>
+        <ul>
+          <li>Everything in All Access</li>
+          <li>Weekly personal training</li>
+          <li>Custom nutrition plan</li>
+          <li>Priority class booking</li>
+        </ul>
+        <a href="#" class="price-btn">Choose Elite</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="trainers">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="sec-eyebrow">Meet The Team</span>
+      <h2>Coaches Who Show Up</h2>
+      <p>Every coach on our floor is certified, hands-on, and genuinely invested in your progress.</p>
+    </div>
+    <div class="trainers-grid">
+      <div class="trainer-card">
+        <div class="trainer-photo">A</div>
+        <div class="trainer-info"><h4>Karim B.</h4><span>Strength Coach</span></div>
+      </div>
+      <div class="trainer-card">
+        <div class="trainer-photo">A</div>
+        <div class="trainer-info"><h4>Yasmine T.</h4><span>Group Classes</span></div>
+      </div>
+      <div class="trainer-card">
+        <div class="trainer-photo">A</div>
+        <div class="trainer-info"><h4>Mehdi R.</h4><span>Personal Training</span></div>
+      </div>
+      <div class="trainer-card">
+        <div class="trainer-photo">A</div>
+        <div class="trainer-info"><h4>Sarra H.</h4><span>Conditioning Coach</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testi section" id="testimonials">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="sec-eyebrow">Member Stories</span>
+      <h2>Real Results, Real People</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"I've tried three gyms in this city. Aspire is the only one where the coaches actually correct your form instead of just watching the clock."</p>
+        <div class="testi-who">
+          <div class="testi-avatar">N</div>
+          <div><strong>Nour A.</strong><span>Member since 2023</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"The 24/7 access changed everything for me. I train at 5am before work and the place is clean, safe, and never overcrowded."</p>
+        <div class="testi-who">
+          <div class="testi-avatar">F</div>
+          <div><strong>Foued K.</strong><span>Member since 2022</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Lost 14kg in 6 months with the Elite Coaching plan. The nutrition guidance alone was worth the membership."</p>
+        <div class="testi-who">
+          <div class="testi-avatar">L</div>
+          <div><strong>Lina M.</strong><span>Member since 2024</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2>Ready To Aspire?</h2>
+    <p>Your first session is on us. Walk in, meet the team, and see what training here actually feels like.</p>
+    <a href="#pricing" class="btn-primary">Claim Your Free Trial</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <img src="/images/aspire-logo.png" alt="Aspire Gym">
+        </div>
+        <p>Sousse's home for serious training — strength, conditioning, and coaching that meets you where you are.</p>
+        <div class="social-row" style="margin-top:20px;">
+          <a href="#">f</a>
+          <a href="#">ig</a>
+          <a href="#">tt</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="#about">About</a>
+        <a href="#programs">Programs</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#trainers">Trainers</a>
+      </div>
+      <div class="footer-col">
+        <h5>Hours</h5>
+        <p>Mon – Fri: 24 Hours</p>
+        <p>Saturday: 7am – 10pm</p>
+        <p>Sunday: 8am – 8pm</p>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <p>Sousse, Tunisia</p>
+        <p>hello@aspiregym.tn</p>
+        <p>+216 00 000 000</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Aspire Gym. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Service</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
